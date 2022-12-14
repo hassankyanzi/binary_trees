@@ -31,4 +31,3 @@ int main(void)
     printf("Uncle of %d: %p\n", root->left->n, (void *)uncle);
     return (0);
 }
-
