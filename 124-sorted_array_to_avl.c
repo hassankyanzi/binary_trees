@@ -1,50 +1,42 @@
 #include "binary_trees.h"
 
 /**
+ * _sorted_array_to_avl - helper func for sorted_array_to_avl
+ * @array: input array
+ * @start: starting index
+ * @end: ending index
+ * @parent: pointer to parent node
+ * Return: newly created node
+ */
+avl_t *_sorted_array_to_avl(int *array, int start, int end, avl_t *parent)
+{
+	avl_t *new;
+	int mid;
+
+	if (start > end)
+		return (NULL);
+	mid = (start + end) / 2;
+	new = calloc(1, sizeof(avl_t));
+	if (!new)
+		return (NULL);
+	new->n = array[mid];
+	new->parent = parent;
+	new->left = _sorted_array_to_avl(array, start, mid - 1, new);
+	new->right = _sorted_array_to_avl(array, mid + 1, end, new);
+	return (new);
+}
+
+
+/**
  * sorted_array_to_avl - builds an AVL tree from an array
- * @array: a pointer to the first element of the array to be converted
- * @size: number of elements in the array
- *
- * Return: a pointer to the root node of the created AVL tree
- *         NULL on failure
+ * @array: input array
+ * @size: size of array
+ * Return: pointer to the root node of the created AVL tree, or NULL on failure
  */
 avl_t *sorted_array_to_avl(int *array, size_t size)
 {
-	avl_t *tree = NULL;
-	size_t middle;
 
 	if (!array)
 		return (NULL);
-	middle = (size - 1) / 2;
-	tree = binary_tree_node(NULL, array[middle]);
-
-	sata_helper(&tree, array, -1, middle);
-	sata_helper(&tree, array, middle, size);
-
-	return (tree);
-}
-
-/**
- * sata_helper - helper that builds an AVL tree from an array
- * @root: double pointer to the root node of the subtree
- * @array: a pointer to the first element of the array to be converted
- * @lo: lower bound index
- * @hi: upper bound index
- */
-void sata_helper(avl_t **root, int *array, size_t lo, size_t hi)
-{
-	avl_t *new = NULL;
-	size_t middle;
-
-	if (hi - lo > 1)
-	{
-		middle = (hi - lo) / 2 + lo;
-		new = binary_tree_node(*root, array[middle]);
-		if (array[middle] > (*root)->n)
-			(*root)->right = new;
-		else if (array[middle] < (*root)->n)
-			(*root)->left = new;
-		sata_helper(&new, array, lo, middle);
-		sata_helper(&new, array, middle, hi);
-	}
+	return (_sorted_array_to_avl(array, 0, size - 1, NULL));
 }

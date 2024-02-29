@@ -2,19 +2,21 @@
 
 /**
  * array_to_avl - builds an AVL tree from an array
- * @array: array to create from
+ * @array: input array
  * @size: size of the array
- *
- * Return: a pointer to the root node of the created AVL tree
- *         NULL on failure
+ * Return: pointer to the root node of the created AVL tree, or NULL on failure
  */
 avl_t *array_to_avl(int *array, size_t size)
 {
-	unsigned int i;
+	size_t i = 0;
 	avl_t *root = NULL;
 
-	for (i = 0; i < size; i++)
+	if (!array)
+		return (NULL);
+	while (i < size)
+	{
 		avl_insert(&root, array[i]);
-
+		i++;
+	}
 	return (root);
 }

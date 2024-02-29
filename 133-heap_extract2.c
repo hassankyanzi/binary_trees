@@ -125,7 +125,7 @@ heap_t *swap_head(heap_t *head, heap_t *node)
 heap_t *perc_down(heap_t *node)
 {
 	int max;
-	heap_t *next = node;
+	heap_t *next = NULL;
 
 	if (!node)
 		return (NULL);
@@ -138,7 +138,7 @@ heap_t *perc_down(heap_t *node)
 		next = node->left;
 	else if (node->right && max == node->right->n)
 		next = node->right;
-	if (next != node)
+	if (next)
 	{
 		swap(node, next);
 		perc_down(node);
